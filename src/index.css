@@ -1,0 +1,42 @@
+header{
+    width: 95%;
+    margin: auto;
+}
+
+main{
+    width: 95%;
+    margin: auto;
+}
+
+header  a{
+text-decoration: none;
+}
+
+header .logo a{
+    font-size: 22px;
+    color: black;
+}
+
+header .breadcrumbs{
+    background-color: black;
+}
+
+header .breadcrumbs a{
+    font-size: 12px;
+    color: white;
+}
+
+header .breadcrumbs ol{
+    display: flex;
+    padding: 0;
+    list-style: none;
+
+}
+
+header .breadcrumbs ol li{
+   margin: 0 5px;
+}
+
+.cardItemList{
+    cursor: pointer;
+}
