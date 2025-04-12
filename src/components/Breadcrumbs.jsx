@@ -1,9 +1,34 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import { getProduct } from '../api/productsApi';
 
 const Breadcrumbs = () => {
   const location = useLocation();
+  const { id } = useParams(); 
   const pathnames = location.pathname.split('/').filter((x) => x);
+  const [productModel, setProductModel] = useState(null);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (id) {
+        try {
+          const product = await getProduct(id);
+          if (product) {
+            setProductModel(product.model); 
+          }
+        } catch (error) {
+          console.error('Error fetching product:', error);
+        }
+      }
+      setIsReady(true); 
+    };
+    fetchProduct();
+  }, [id]);
+
+  if (!isReady) {
+    return null;
+  }
 
   return (
     <nav aria-label="breadcrumb" className='breadcrumbs'>
@@ -13,10 +38,16 @@ const Breadcrumbs = () => {
         </li>
         {pathnames.map((value, index) => {
           const to = `/${pathnames.slice(0, index + 1).join('/')}`;
+          const isLast = index === pathnames.length - 1;
+
           return (
             <li key={to}>
-              <span>/</span>
-              <Link to={to}>{value}</Link>
+              <span className='me-2'>/</span>
+              {isLast && productModel ? (
+                <span>{productModel}</span>
+              ) : (
+                <Link to={to}>{value}</Link>
+              )}
             </li>
           );
         })}
