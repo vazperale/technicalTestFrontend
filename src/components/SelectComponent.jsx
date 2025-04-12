@@ -11,7 +11,7 @@ export default function SelectComponent ({
     <div>
       <strong className="text-primary">{label.toUpperCase()}</strong>
       <select
-        value={selectedValue}
+        value={selectedValue ?? ''}
         onChange={handleChange}
         className="form-select"
       >

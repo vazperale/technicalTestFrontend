@@ -1,12 +1,12 @@
 import { getProducts } from '../api/productsApi';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CommonLayout from '../layouts/CommonLayout';
 import ProductListItem from '../components/ProductListItem';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 export default function ProductListView() {
-  const [products, setProducts] = useState([]); 
-  const [filteredProducts, setFilteredProducts] = useState([]); 
+  const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [visibleProducts, setVisibleProducts] = useState([]); // Productos visibles actualmente
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -14,25 +14,26 @@ export default function ProductListView() {
 
   const ITEMS_PER_PAGE = 20; // Número de productos cargados por página
 
+
+  const updateStatesAndVisibleProducts = async (data) => {
+    setProducts(data);
+    setFilteredProducts(data);
+    setVisibleProducts(data.slice(0, ITEMS_PER_PAGE)); // Mostrar los primeros elementos
+  }
+
+
   const fetchProducts = async () => {
     try {
-      if (
-        !localStorage.getItem('cache_data') ||
-        new Date() > new Date(localStorage.getItem('expiration_cache_PLP_data_time'))
-      ) {
+      if (!localStorage.getItem('cache_data') || new Date() > new Date(localStorage.getItem('expiration_cache_PLP_data_time'))) {
         const data = await getProducts();
-        setProducts(data);
-        setFilteredProducts(data);
-        setVisibleProducts(data.slice(0, ITEMS_PER_PAGE)); // Mostrar los primeros elementos
+        updateStatesAndVisibleProducts(data);
 
         const expirationTime = new Date(new Date().setHours(new Date().getHours() + 1));
         localStorage.setItem('cache_data_PLP', JSON.stringify(data));
         localStorage.setItem('expiration_cache_PLP_data_time', expirationTime.toString());
       } else {
         const cachedData = JSON.parse(localStorage.getItem('cache_data_PLP'));
-        setProducts(cachedData);
-        setFilteredProducts(cachedData);
-        setVisibleProducts(cachedData.slice(0, ITEMS_PER_PAGE)); // Mostrar los primeros elementos
+        updateStatesAndVisibleProducts(data);
       }
     } catch (error) {
       console.log('Error fetching products:', error);

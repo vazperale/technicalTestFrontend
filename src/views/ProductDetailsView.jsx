@@ -1,5 +1,5 @@
 import { getProduct } from '../api/productsApi';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CommonLayout from '../layouts/CommonLayout';
 import { addToCart } from '../api/productsApi';
@@ -11,8 +11,8 @@ export default function ProductDetailsView() {
     const [product, setProduct] = useState(null);
     const [productDescription, setProductDescription] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [selectedColor, setSelectedColor] = useState(null);
-    const [selectedStorage, setSelectedStorage] = useState(null);
+    const [selectedColor, setSelectedColor] = useState("");
+    const [selectedStorage, setSelectedStorage] = useState("");
     const { cartCount, updateCart } = useCart();
     const [showAlert, setShowAlert] = useState(false);
 
@@ -90,8 +90,8 @@ export default function ProductDetailsView() {
             OS: data.os,
             "Display Resolution": data.displayResolution,
             Battery: data.battery,
-            "Secondary Camera": data.secondaryCmera[0] + '/' + data.secondaryCmera[1],
-            "Primary Camera": data.primaryCamera[0] + '/' + data.primaryCamera[1],
+            "Secondary Camera": data.secondaryCmera[0] + ' ' + data.secondaryCmera[1],
+            "Primary Camera": data.primaryCamera[0] + ' ' + data.primaryCamera[1],
             "Display Size": data.displaySize,
             Weight: data.weight? data.weight + ' Gr' :'NS',
         };
