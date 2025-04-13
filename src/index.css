@@ -46,3 +46,11 @@ header .breadcrumbs ol li {
 .product-details {
     margin-top: 100px;
 }
+
+.cardItemList:hover{
+    background-color: oldlace;
+}
+
+.image-container img{
+    mix-blend-mode: multiply;
+}

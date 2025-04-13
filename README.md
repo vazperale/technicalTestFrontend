@@ -22,12 +22,23 @@ How to run the project:
 
 4. Create .env in the root project folder and add the following variable:
 
-    ```env
-    VITE_API_URL = 'La ruta de la api(proporcionada en el pdf)'
+    ```bash
+    VITE_API_URL = API path(in the pdf)
     ```
+    NOTE: if you dont create .env and add the URL, when you enter in the app appears a message notify you that you need to do this.
 
 5. Run the project:
 
     ```bash
     npm start
     ```
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+# Comments about the app:
+
+-Header with cart that update when you add product to cart in pdp, breadcrumbs for navigate,and name/logo that return to home when you click it.
+-PLP with infinite scroll, searchbar for filter with brand , model or both,  and change color when you do hover in product.Click in the product navigate to the pdp product.
+-PDP with photo, details/description, selects for color and storage and button for add to the cart.When you add to the cart, an alert shows during 3 seconds to notice you that 
+ the product was added to the cart. if you don´t select color and storage, the button was disabled to avoid errors.
+ -Cache system for plp and pdp with 1 hour duration.

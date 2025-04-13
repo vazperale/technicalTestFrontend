@@ -33,7 +33,7 @@ export default function ProductListView() {
         localStorage.setItem('expiration_cache_PLP_data_time', expirationTime.toString());
       } else {
         const cachedData = JSON.parse(localStorage.getItem('cache_data_PLP'));
-        updateStatesAndVisibleProducts(data);
+        updateStatesAndVisibleProducts(cachedData);
       }
     } catch (error) {
       console.log('Error fetching products:', error);
@@ -51,11 +51,13 @@ export default function ProductListView() {
       setVisibleProducts(products.slice(0, ITEMS_PER_PAGE));
       setHasMore(true);
     } else {
-      const filtered = products.filter(
-        (product) =>
-          product.brand.toLowerCase().includes(query.toLowerCase()) ||
-          product.model.toLowerCase().includes(query.toLowerCase())
-      );
+      const filtered = products.filter((product) => {
+        const queryWords = query.toLowerCase().trim().split(/\s+/);
+        
+        return queryWords.every((word) =>
+          `${product.brand} ${product.model}`.toLowerCase().includes(word)
+        );
+      });
       setFilteredProducts(filtered);
       setVisibleProducts(filtered.slice(0, ITEMS_PER_PAGE));
       setHasMore(filtered.length > ITEMS_PER_PAGE);
