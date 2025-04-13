@@ -7,17 +7,17 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 export default function ProductListView() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [visibleProducts, setVisibleProducts] = useState([]); // Productos visibles actualmente
+  const [visibleProducts, setVisibleProducts] = useState([]); // Productos visibles actualmente(Infinite Scroll)
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const [hasMore, setHasMore] = useState(true); // Control para cargar más productos
+  const [hasMore, setHasMore] = useState(true); // Control para cargar más productos(Infinite Scroll)
 
-  const ITEMS_PER_PAGE = 20; // Número de productos cargados por página
+  const ITEMS_PER_PAGE = 20; // Número de productos cargados por página(Infinite Scroll)
 
   const updateStatesAndVisibleProducts = useCallback((data) => {
     setProducts(data);
     setFilteredProducts(data);
-    setVisibleProducts(data.slice(0, ITEMS_PER_PAGE)); // Mostrar los primeros elementos
+    setVisibleProducts(data.slice(0, ITEMS_PER_PAGE)); // Mostrar los primeros elementos(Infinite Scroll)
   }, []);
 
   const fetchProducts = useCallback(async () => {

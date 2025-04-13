@@ -8,7 +8,6 @@ export default function Header (){
 
   const { cartCount } = useCart();
 
-
   return (
     <header>
       <div className='d-flex justify-content-between'>

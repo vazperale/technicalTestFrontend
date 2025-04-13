@@ -4,8 +4,6 @@ import ProductListView from "./views/ProductListView";
 import ProductDetailsView from "./views/ProductDetailsView";
 import { CartProvider } from './context/cartContext';
 
-
-
 export default function Router() {
   return (
     <BrowserRouter>

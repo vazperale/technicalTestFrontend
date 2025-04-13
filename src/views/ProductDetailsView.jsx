@@ -62,8 +62,8 @@ export default function ProductDetailsView() {
             OS: data.os,
             "Display Resolution": data.displayResolution,
             Battery: data.battery,
-            "Secondary Camera": data.secondaryCmera[0] + ' ' + data.secondaryCmera[1],
-            "Primary Camera": data.primaryCamera[0] + ' ' + data.primaryCamera[1],
+            "Primary Camera":data.primaryCamera.map((specification)=>{return specification}).join(" "),
+            "Secondary Camera":data.secondaryCmera.map((specification)=>{return specification}).join(" "),
             "Display Size": data.displaySize,
             Weight: data.weight ? data.weight + ' Gr' : 'NS',
         };
@@ -74,10 +74,7 @@ export default function ProductDetailsView() {
         try {
             let data;
     
-            if (
-                !localStorage.getItem(`PDP_${id}`) ||
-                new Date() > new Date(localStorage.getItem(`expiration_cache_pdp_${id}_data_time`))
-            ) {
+            if (!localStorage.getItem(`PDP_${id}`) || new Date() > new Date(localStorage.getItem(`expiration_cache_pdp_${id}_data_time`))) {
                 data = await getProduct(id);
                 if (data) {
                     const expirationTime = new Date(new Date().setHours(new Date().getHours() + 1));
