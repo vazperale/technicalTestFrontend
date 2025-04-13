@@ -74,12 +74,12 @@ export default function ProductDetailsView() {
         try {
             let data;
     
-            if (!localStorage.getItem(`PDP_${id}`) || new Date() > new Date(localStorage.getItem(`expiration_cache_pdp_${id}_data_time`))) {
+            if (!localStorage.getItem(`cache_PDP_${id}`) || new Date() > new Date(localStorage.getItem(`expiration_cache_PDP_${id}`))) {
                 data = await getProduct(id);
                 if (data) {
                     const expirationTime = new Date(new Date().setHours(new Date().getHours() + 1));
-                    localStorage.setItem(`PDP_${id}`, JSON.stringify(data));
-                    localStorage.setItem(`expiration_cache_pdp_${id}_data_time`, expirationTime.toString());
+                    localStorage.setItem(`cache_PDP_${id}`, JSON.stringify(data));
+                    localStorage.setItem(`expiration_cache_PDP_${id}`, expirationTime.toString());
                 }
             } else {
                 data = JSON.parse(localStorage.getItem(`PDP_${id}`));

@@ -22,15 +22,15 @@ export default function ProductListView() {
 
   const fetchProducts = useCallback(async () => {
     try {
-      if (!localStorage.getItem('cache_data') || new Date() > new Date(localStorage.getItem('expiration_cache_PLP_data_time'))) {
+      if (!localStorage.getItem('cache_PLP') || new Date() > new Date(localStorage.getItem('expiration_cache_PLP'))) {
         const data = await getProducts();
         updateStatesAndVisibleProducts(data);
         
         const expirationTime = new Date(new Date().setHours(new Date().getHours() + 1));
-        localStorage.setItem('cache_data_PLP', JSON.stringify(data));
-        localStorage.setItem('expiration_cache_PLP_data_time', expirationTime.toString());
+        localStorage.setItem('cache_PLP', JSON.stringify(data));
+        localStorage.setItem('expiration_cache_PLP', expirationTime.toString());
       } else {
-        const cachedData = JSON.parse(localStorage.getItem('cache_data_PLP'));
+        const cachedData = JSON.parse(localStorage.getItem('cache_PLP'));
         updateStatesAndVisibleProducts(cachedData);
       }
     } catch (error) {
