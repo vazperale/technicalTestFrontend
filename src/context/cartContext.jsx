@@ -1,10 +1,9 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState } from 'react';
 
-// Crear el contexto
 const CartContext = createContext();
 
 // Proveedor del contexto
-export const CartProvider = ({ children }) => {
+export default function CartProvider ({ children }) {
   const [cartCount, setCartCount] = useState(Number(localStorage.getItem('cart')) || 0);
 
   const updateCart = (newCount) => {
@@ -19,6 +18,3 @@ export const CartProvider = ({ children }) => {
     </CartContext.Provider>
   );
 };
-
-// Hook personalizado para usar el contexto
-export const useCart = () => useContext(CartContext);

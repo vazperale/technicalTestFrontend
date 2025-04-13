@@ -1,5 +1,5 @@
 import { getProducts } from '../api/productsApi';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import CommonLayout from '../layouts/CommonLayout';
 import ProductListItem from '../components/ProductListItem';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -14,15 +14,13 @@ export default function ProductListView() {
 
   const ITEMS_PER_PAGE = 20; // Número de productos cargados por página
 
-
-  const updateStatesAndVisibleProducts = async (data) => {
+  const updateStatesAndVisibleProducts = useCallback((data) => {
     setProducts(data);
     setFilteredProducts(data);
     setVisibleProducts(data.slice(0, ITEMS_PER_PAGE)); // Mostrar los primeros elementos
-  }
+  }, []);
 
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       if (!localStorage.getItem('cache_data') || new Date() > new Date(localStorage.getItem('expiration_cache_PLP_data_time'))) {
         const data = await getProducts();
@@ -40,7 +38,7 @@ export default function ProductListView() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [updateStatesAndVisibleProducts]);
 
   const handleSearchChange = (e) => {
     const query = e.target.value;
@@ -53,7 +51,6 @@ export default function ProductListView() {
     } else {
       const filtered = products.filter((product) => {
         const queryWords = query.toLowerCase().trim().split(/\s+/);
-        
         return queryWords.every((word) =>
           `${product.brand} ${product.model}`.toLowerCase().includes(word)
         );
@@ -79,7 +76,7 @@ export default function ProductListView() {
 
   useEffect(() => {
     fetchProducts();
-  }, []);
+  }, [fetchProducts]);
 
   return (
     <CommonLayout>

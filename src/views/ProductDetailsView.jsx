@@ -1,9 +1,9 @@
 import { getProduct } from '../api/productsApi';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import CommonLayout from '../layouts/CommonLayout';
 import { addToCart } from '../api/productsApi';
-import { useCart } from '../context/cartContext';
+import { useCart } from '../context/useCart';
 import ProductDetails from '../components/ProductDetails';
 
 export default function ProductDetailsView() {
@@ -40,10 +40,40 @@ export default function ProductDetailsView() {
         }
     };
 
-    const GetProductMobileDetails = async (id) => {
+    const updateStateWithProductData = useCallback((data) => {
+        setProduct({
+            imgUrl: data.imgUrl,
+            storageOptions: data.options.storages,
+            colorOptions: data.options.colors,
+        });
+    
+        const defaultColor = data.options.colors.length === 1 ? data.options.colors[0].code : null;
+        const defaultStorage = data.options.storages.length === 1 ? data.options.storages[0].code : null;
+    
+        setSelectedColor(defaultColor);
+        setSelectedStorage(defaultStorage);
+    
+        const filteredPropertiesProduct = {
+            Brand: data.brand,
+            Model: data.model,
+            Price: data.price + ' EUR',
+            CPU: data.cpu,
+            Ram: data.ram,
+            OS: data.os,
+            "Display Resolution": data.displayResolution,
+            Battery: data.battery,
+            "Secondary Camera": data.secondaryCmera[0] + ' ' + data.secondaryCmera[1],
+            "Primary Camera": data.primaryCamera[0] + ' ' + data.primaryCamera[1],
+            "Display Size": data.displaySize,
+            Weight: data.weight ? data.weight + ' Gr' : 'NS',
+        };
+        setProductDescription(filteredPropertiesProduct);
+    }, []);
+    
+    const GetProductMobileDetails = useCallback(async (id) => {
         try {
             let data;
-
+    
             if (
                 !localStorage.getItem(`PDP_${id}`) ||
                 new Date() > new Date(localStorage.getItem(`expiration_cache_pdp_${id}_data_time`))
@@ -57,7 +87,7 @@ export default function ProductDetailsView() {
             } else {
                 data = JSON.parse(localStorage.getItem(`PDP_${id}`));
             }
-
+    
             if (data) {
                 updateStateWithProductData(data);
             }
@@ -66,41 +96,11 @@ export default function ProductDetailsView() {
         } finally {
             setLoading(false);
         }
-    };
-
-    const updateStateWithProductData = (data) => {
-        setProduct({
-            imgUrl: data.imgUrl,
-            storageOptions: data.options.storages,
-            colorOptions: data.options.colors,
-        });
-
-        const defaultColor = data.options.colors.length === 1 ? data.options.colors[0].code : null;
-        const defaultStorage = data.options.storages.length === 1 ? data.options.storages[0].code : null;
-
-        setSelectedColor(defaultColor);
-        setSelectedStorage(defaultStorage);
-
-        const filteredPropertiesProduct = {
-            Brand: data.brand,
-            Model: data.model,
-            Price: data.price + ' EUR',
-            CPU: data.cpu,
-            Ram: data.ram,
-            OS: data.os,
-            "Display Resolution": data.displayResolution,
-            Battery: data.battery,
-            "Secondary Camera": data.secondaryCmera[0] + ' ' + data.secondaryCmera[1],
-            "Primary Camera": data.primaryCamera[0] + ' ' + data.primaryCamera[1],
-            "Display Size": data.displaySize,
-            Weight: data.weight? data.weight + ' Gr' :'NS',
-        };
-        setProductDescription(filteredPropertiesProduct);
-    };
-
+    }, [updateStateWithProductData]);
+    
     useEffect(() => {
         GetProductMobileDetails(id);
-    }, [id]);
+    }, [id, GetProductMobileDetails]);
 
     return (
         <>
