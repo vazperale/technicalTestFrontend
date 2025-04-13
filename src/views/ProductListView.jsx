@@ -25,7 +25,7 @@ export default function ProductListView() {
       if (!localStorage.getItem('cache_data') || new Date() > new Date(localStorage.getItem('expiration_cache_PLP_data_time'))) {
         const data = await getProducts();
         updateStatesAndVisibleProducts(data);
-
+        
         const expirationTime = new Date(new Date().setHours(new Date().getHours() + 1));
         localStorage.setItem('cache_data_PLP', JSON.stringify(data));
         localStorage.setItem('expiration_cache_PLP_data_time', expirationTime.toString());

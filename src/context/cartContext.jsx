@@ -1,9 +1,10 @@
 import React, { createContext, useState } from 'react';
 
+// Crear el contexto
 const CartContext = createContext();
 
 // Proveedor del contexto
-export default function CartProvider ({ children }) {
+export const CartProvider = ({ children }) => {
   const [cartCount, setCartCount] = useState(Number(localStorage.getItem('cart')) || 0);
 
   const updateCart = (newCount) => {
@@ -18,3 +19,5 @@ export default function CartProvider ({ children }) {
     </CartContext.Provider>
   );
 };
+
+export default CartContext;  

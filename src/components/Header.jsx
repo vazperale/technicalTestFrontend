@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaShoppingCart } from "react-icons/fa";
 import Breadcrumbs from './Breadcrumbs';
-import { useCart } from '../context/useCart';
+import useCart from '../context/useCart';
 
 export default function Header (){
 

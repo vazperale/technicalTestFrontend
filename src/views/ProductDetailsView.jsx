@@ -3,7 +3,7 @@ import React, { useEffect, useState,useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import CommonLayout from '../layouts/CommonLayout';
 import { addToCart } from '../api/productsApi';
-import { useCart } from '../context/useCart';
+import useCart  from '../context/useCart';
 import ProductDetails from '../components/ProductDetails';
 
 export default function ProductDetailsView() {
