@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { getProduct } from '../api/productsApi';
+import strings from '../config/strings';
 
 const Breadcrumbs = () => {
   const location = useLocation();
@@ -34,7 +35,7 @@ const Breadcrumbs = () => {
     <nav aria-label="breadcrumb" className='breadcrumbs'>
       <ol className='m-1'>
         <li>
-          <Link to="/">Inicio</Link>
+          <Link to="/">{strings["header.breadcrum.inicio"]}</Link>
         </li>
         {pathnames.map((value, index) => {
           const to = `/${pathnames.slice(0, index + 1).join('/')}`;

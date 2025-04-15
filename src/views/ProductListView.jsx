@@ -4,6 +4,7 @@ import CommonLayout from '../layouts/CommonLayout';
 import ProductListItem from '../components/ProductListItem';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import SearchBar from '../components/searchBar';
+import strings from '../config/strings';
 
 export default function ProductListView() {
   const [products, setProducts] = useState([]);
@@ -82,7 +83,7 @@ export default function ProductListView() {
   return (
     <CommonLayout>
       {loading ? (
-        <p>Loading products...</p>
+        <p>{strings["plp.products.loading"]}</p>
       ) : (
         <>
           <div className="d-flex justify-content-end mt-2">
@@ -94,18 +95,24 @@ export default function ProductListView() {
           </div>
           <div className="container mt-4">
             <InfiniteScroll
-              dataLength={visibleProducts.length}
-              next={fetchMoreProducts}
-              hasMore={hasMore}
-              loader={<p>Loading more products...</p>}
+              dataLength={visibleProducts.length} 
+              next={fetchMoreProducts} 
+              hasMore={hasMore} 
+              loader={<p>{strings["plp.products.infinitescroll.loadmore"]}</p>} 
               style={{ overflow: 'visible' }}
             >
               <div className="row">
-                {visibleProducts.map((product) => (
-                  <div key={product.id} className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-                    <ProductListItem itemProduct={product} />
+                {visibleProducts.length === 0 ? (
+                  <div className="col-12 text-center">
+                    <p>{strings["plp.products.noresults"]}</p>
                   </div>
-                ))}
+                ) : (
+                  visibleProducts.map((product) => (
+                    <div key={product.id} className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+                      <ProductListItem itemProduct={product} />
+                    </div>
+                  ))
+                )}
               </div>
             </InfiniteScroll>
           </div>

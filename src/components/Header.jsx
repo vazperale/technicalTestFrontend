@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { FaShoppingCart } from "react-icons/fa";
 import Breadcrumbs from './Breadcrumbs';
 import useCart from '../context/useCart';
+import strings from '../config/strings';
+
 
 export default function Header (){
 
@@ -12,7 +14,7 @@ export default function Header (){
     <header>
       <div className='d-flex justify-content-between'>
       <span className='logo'>
-        <Link to="/">Mobile Shop</Link>
+        <Link to="/">{strings["header.logo.name"]}</Link>
       </span>
       
         <span className='logo-carrito d-flex align-items-center'>

@@ -5,6 +5,7 @@ import CommonLayout from '../layouts/CommonLayout';
 import { addToCart } from '../api/productsApi';
 import useCart from '../context/useCart';
 import ProductDetails from '../components/ProductDetails';
+import strings from '../config/strings';
 
 export default function ProductDetailsView() {
     const { id } = useParams();
@@ -108,7 +109,7 @@ export default function ProductDetailsView() {
         <>
             <CommonLayout>
                 {loading ? (
-                    <p>Loading product details...</p>
+                    <p>{strings["pdp.product.loading"]}</p>
                 ) : (
                     <ProductDetails
                         product={product}

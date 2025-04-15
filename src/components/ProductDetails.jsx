@@ -2,6 +2,10 @@ import React from 'react';
 import SelectComponent from './SelectComponent';
 import AddToCartButton from './AddToCartButton';
 import AlertNotification from './AlertNotification';
+import { Link} from 'react-router-dom';
+import strings from '../config/strings';
+
+
 
 export default function ProductDetails ({
   product,
@@ -15,11 +19,12 @@ export default function ProductDetails ({
   showAlert
 }) {
   if (!product) {
-    return <p>Invalid product ID. Could not load product details.</p>;
+    return <p>{strings["pdp.error.productId"]}</p>;
   }
 
   return (
     <>
+    <Link className="mt-3 link-primary link-underline-opacity-10" to="/">Back to PLP</Link>
       <div className='product-details d-flex justify-content-around align-items-center flex-wrap'>
         <div className='image-details mb-4'>
           <img width={250} src={product.imgUrl} alt={product.model} />
@@ -57,7 +62,7 @@ export default function ProductDetails ({
           </div>
         </div>
       </div>
-      <AlertNotification showAlert={showAlert} />
+      <AlertNotification showAlert={showAlert} text={strings["pdp.add.product.cart"]}/>
     </>
   );
 }
