@@ -25,7 +25,7 @@ export default function ProductDetails ({
   return (
     <>
     <Link className="mt-3 link-primary link-underline-opacity-10" to="/">Back to PLP</Link>
-      <div className='product-details d-flex justify-content-around align-items-center flex-wrap'>
+      <div className='product-details d-flex justify-content-around flex-wrap'>
         <div className='image-details mb-4'>
           <img width={250} src={product.imgUrl} alt={product.model} />
         </div>
