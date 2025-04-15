@@ -3,6 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import CommonLayout from '../layouts/CommonLayout';
 import ProductListItem from '../components/ProductListItem';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import SearchBar from '../components/searchBar';
 
 export default function ProductListView() {
   const [products, setProducts] = useState([]);
@@ -25,7 +26,7 @@ export default function ProductListView() {
       if (!localStorage.getItem('cache_PLP') || new Date() > new Date(localStorage.getItem('expiration_cache_PLP'))) {
         const data = await getProducts();
         updateStatesAndVisibleProducts(data);
-        
+
         const expirationTime = new Date(new Date().setHours(new Date().getHours() + 1));
         localStorage.setItem('cache_PLP', JSON.stringify(data));
         localStorage.setItem('expiration_cache_PLP', expirationTime.toString());
@@ -85,13 +86,10 @@ export default function ProductListView() {
       ) : (
         <>
           <div className="d-flex justify-content-end mt-2">
-            <input
-              type="text"
-              data-testid="search-bar"
-              className="search-input"
+            <SearchBar
+              searchQuery={searchQuery}
+              handleSearchChange={handleSearchChange}
               placeholder="Search for a product..."
-              value={searchQuery}
-              onChange={handleSearchChange}
             />
           </div>
           <div className="container mt-4">

@@ -1,9 +1,9 @@
 import { getProduct } from '../api/productsApi';
-import React, { useEffect, useState,useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import CommonLayout from '../layouts/CommonLayout';
 import { addToCart } from '../api/productsApi';
-import useCart  from '../context/useCart';
+import useCart from '../context/useCart';
 import ProductDetails from '../components/ProductDetails';
 
 export default function ProductDetailsView() {
@@ -46,45 +46,50 @@ export default function ProductDetailsView() {
             storageOptions: data.options.storages,
             colorOptions: data.options.colors,
         });
-    
+
         const defaultColor = data.options.colors.length === 1 ? data.options.colors[0].code : null;
         const defaultStorage = data.options.storages.length === 1 ? data.options.storages[0].code : null;
-    
+
         setSelectedColor(defaultColor);
         setSelectedStorage(defaultStorage);
-    
+
         const filteredPropertiesProduct = {
             Brand: data.brand,
             Model: data.model,
-            Price: data.price + ' EUR',
+            Price: data.price ? data.price+ ' EUR' : "NS",
             CPU: data.cpu,
             Ram: data.ram,
             OS: data.os,
             "Display Resolution": data.displayResolution,
             Battery: data.battery,
-            "Primary Camera":data.primaryCamera.map((specification)=>{return specification}).join(" "),
-            "Secondary Camera":data.secondaryCmera.map((specification)=>{return specification}).join(" "),
+            "Primary Camera": Array.isArray(data.primaryCamera)
+                ? data.primaryCamera.join(" ")
+                : data.primaryCamera,
+            "Secondary Camera": Array.isArray(data.secondaryCmera)
+                ? data.secondaryCmera.join(" ")
+                : data.secondaryCmera,
             "Display Size": data.displaySize,
             Weight: data.weight ? data.weight + ' Gr' : 'NS',
         };
         setProductDescription(filteredPropertiesProduct);
     }, []);
-    
+
     const GetProductMobileDetails = useCallback(async (id) => {
         try {
             let data;
-    
+
             if (!localStorage.getItem(`cache_PDP_${id}`) || new Date() > new Date(localStorage.getItem(`expiration_cache_PDP_${id}`))) {
                 data = await getProduct(id);
+                
                 if (data) {
                     const expirationTime = new Date(new Date().setHours(new Date().getHours() + 1));
                     localStorage.setItem(`cache_PDP_${id}`, JSON.stringify(data));
                     localStorage.setItem(`expiration_cache_PDP_${id}`, expirationTime.toString());
                 }
             } else {
-                data = JSON.parse(localStorage.getItem(`PDP_${id}`));
+                data = JSON.parse(localStorage.getItem(`cache_PDP_${id}`));
             }
-    
+
             if (data) {
                 updateStateWithProductData(data);
             }
@@ -94,7 +99,7 @@ export default function ProductDetailsView() {
             setLoading(false);
         }
     }, [updateStateWithProductData]);
-    
+
     useEffect(() => {
         GetProductMobileDetails(id);
     }, [id, GetProductMobileDetails]);
